@@ -114,7 +114,7 @@ const data = {
             items: [
                 {
                     title: "Vehicles",
-                    url: "/fleet-management/vehicles",
+                    url: "/fleet-management/",
                 },
                 {
                     title: "Drivers",
@@ -179,7 +179,15 @@ const data = {
 
 export default function Layout() {
     const { pathname } = useLocation();
-    const currentPath = pathname.replace(/^\/|\/$/g, '').replace(/^\w/, (c) => c.toUpperCase());
+    // const currentPath = pathname.replace(/^\/|\/$/g, '').replace(/^\w/, (c) => c.toUpperCase());
+    const currentPath = pathname
+        .replace(/^\/|\/$/g, '')                // Remove leading and trailing slashes
+        .replace(/-/g, ' ')                     // Replace hyphens with spaces
+        .split('/')                             // Split by remaining slashes
+        .map(part =>                            // For each part
+            part.replace(/^\w/, c => c.toUpperCase())  // Capitalize first letter
+        )
+        .join('/');
 
     const hasChildComponent = () => {
         // Add routes that have child components
@@ -376,15 +384,15 @@ export default function Layout() {
                         <SidebarTrigger className="-ml-1 hover:bg-gray-500/30 rounded" />
                         <Separator orientation="vertical" className="mr-2 h-4 bg-white" />
                         <Breadcrumb>
-                        <BreadcrumbList>
-                                <BreadcrumbItem className="hidden md:block">
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="block">
                                     <BreadcrumbLink className="text-white">
                                         {pathname === '/' ? 'Dashboard' : currentPath}
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 {hasChildComponent() && (
                                     <>
-                                        <BreadcrumbSeparator className="hidden md:block" />
+                                        <BreadcrumbSeparator className="block" />
                                         <BreadcrumbItem>
                                             <BreadcrumbPage>{hasChildComponent()}</BreadcrumbPage>
                                         </BreadcrumbItem>

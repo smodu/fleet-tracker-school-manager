@@ -1,5 +1,9 @@
+import Students from "@/components/Students"
+
 const StudentManagement = () => {
-  return <div>Student Management Content</div>
+  return (
+    <Students />
+  )
 }
 
 export default StudentManagement
