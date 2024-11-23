@@ -187,7 +187,7 @@ const Notifications = () => {
 
 
     return (
-        <Card className="w-full min-h-screen mx-auto bg-[#2B2B2B] border-hidden">
+        <Card className="w-full min-h-screen mx-auto bg-[#2B2B2B] border-hidden rounded-none">
             <CardContent className="p-6">
                 <Tabs defaultValue="foryou" className="w-full">
                     <TabsList className="w-full mb-6 bg-[#3C3C3C] p-1 rounded-md">

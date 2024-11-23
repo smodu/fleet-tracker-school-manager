@@ -17,6 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useTheme } from "./theme-provider"
 
 export const description = "A linear area chart"
 
@@ -37,11 +38,12 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function FuelChart() {
+  const theme = useTheme()
   return (
     <Card className="border-hidden">
       <CardHeader className="relative flex flex-row justify-between w-full items-center">
         <div className="gap-2 flex flex-col">
-          <CardTitle className="text-white">Fuel consumed</CardTitle>
+          <CardTitle className="text-black dark:text-white">Fuel consumed</CardTitle>
           <CardDescription className="text-gray-400">January - June 2024</CardDescription>
         </div>
         <div className="hover:bg-gray-500/30 cursor-pointer p-2 rounded absolute top-2 right-2">
@@ -65,7 +67,8 @@ export function FuelChart() {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
-              style={{ fill: "#ffffff" }}
+              // style={{ fill: theme === 'dark' ? "#ffffff" : "#000000" }}
+              style={{ fill: "#ffffff"}}
             />
             <ChartTooltip
               cursor={false}

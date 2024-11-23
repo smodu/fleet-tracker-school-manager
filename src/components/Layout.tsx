@@ -210,15 +210,15 @@ export default function Layout() {
 
     return (
         <SidebarProvider>
-            <Sidebar className="border-r border-gray-500" collapsible="icon">
-                <SidebarHeader className="bg-[#2B2B2B] text-white p-6">
+            <Sidebar className="border-r border-gray-500 " collapsible="icon">
+                <SidebarHeader className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white p-6">
                     <div className={`flex font-bold`}>
                         <h1 className="text-purple-500">Fleet</h1>
                         <h1 className="ml-1">Tracker</h1>
                         <h3 className="text-xs text-gray-400 mx-2">school</h3>
                     </div>
                 </SidebarHeader>
-                <SidebarContent className="bg-[#2B2B2B] text-white">
+                <SidebarContent className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white">
                     <SidebarGroup className="">
                         <SidebarGroupLabel className="text-gray-500/90 ">Platform</SidebarGroupLabel>
                         <SidebarMenu className="">
@@ -230,8 +230,8 @@ export default function Layout() {
                                     className="group/collapsible "
                                 >
                                     <SidebarMenuItem className="">
-                                        <CollapsibleTrigger className="hover:bg-gray-500/30 hover:text-white" asChild>
-                                            <SidebarMenuButton className="hover:bg-gray-500/30 hover:text-white" tooltip={item.title}>
+                                        <CollapsibleTrigger className="hover:bg-gray-300/30 dark:hover:bg-gray-500/30 hover:text-black dark:hover:text-white" asChild>
+                                            <SidebarMenuButton className="hover:bg-gray-300/30 dark:hover:bg-gray-500/30 hover:text-black dark:hover:text-white" tooltip={item.title}>
                                                 {item.icon && <item.icon />}
                                                 <span className="">{item.title}</span>
                                                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -266,46 +266,20 @@ export default function Layout() {
                                             <span>{item.name}</span>
                                         </a>
                                     </SidebarMenuButton>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger className="" asChild>
-                                            <SidebarMenuAction showOnHover>
-                                                <MoreHorizontal />
-                                                <span className="sr-only">More</span>
-                                            </SidebarMenuAction>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent
-                                            className="w-48 rounded-lg bg-[#2B2B2B] text-white"
-                                            side="bottom"
-                                            align="end"
-                                        >
-                                            <DropdownMenuItem>
-                                                <Folder className="text-muted-foreground" />
-                                                <span>View Project</span>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <Forward className="text-muted-foreground" />
-                                                <span>Share Project</span>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem>
-                                                <Trash2 className="text-muted-foreground" />
-                                                <span>Delete Project</span>
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
+                                    
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
                     </SidebarGroup>
                 </SidebarContent>
-                <SidebarFooter className="bg-[#2B2B2B] text-white">
+                <SidebarFooter className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white">
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <SidebarMenuButton
                                         size="lg"
-                                        className="hover:bg-gray-500/30 active:bg-transparent active:text-white hover:text-white"
+                                        className="hover:bg-gray-300/30 dark:hover:bg-gray-500/30 active:bg-transparent active:text-white hover:text-black dark:hover:text-white"
                                     >
                                         <Avatar className="h-8 w-8 rounded-lg">
                                             <AvatarImage
@@ -326,12 +300,12 @@ export default function Layout() {
                                     </SidebarMenuButton>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
-                                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg bg-[#2B2B2B] text-white"
+                                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg bg-gray-500 dark:bg-[#2B2B2B] text-white"
                                     side="bottom"
                                     align="end"
                                     sideOffset={4}
                                 >
-                                    <DropdownMenuLabel className="p-0 font-normal bg-[#2B2B2B] text-white">
+                                    <DropdownMenuLabel className="p-0 font-normal bg-gray-500 dark:bg-[#2B2B2B] text-white">
                                         <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                             <Avatar className="h-8 w-8 rounded-lg">
                                                 <AvatarImage
@@ -379,14 +353,14 @@ export default function Layout() {
                 {/* <SidebarRail /> */}
             </Sidebar>
             <SidebarInset>
-                <header className=" bg-[#2B2B2B] border-b border-gray-500 text-white flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                <header className=" bg-white dark:bg-[#2B2B2B] border-b border-gray-500 text-black dark:text-white flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                     <div className="flex items-center gap-2 px-4">
                         <SidebarTrigger className="-ml-1 hover:bg-gray-500/30 rounded" />
                         <Separator orientation="vertical" className="mr-2 h-4 bg-white" />
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="block">
-                                    <BreadcrumbLink className="text-white">
+                                    <BreadcrumbLink className="text-black dark:text-white">
                                         {pathname === '/' ? 'Dashboard' : currentPath}
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
@@ -402,7 +376,7 @@ export default function Layout() {
                         </Breadcrumb>
                     </div>
                 </header>
-                <div className="flex flex-col gap-4 bg-[#2B2B2B]">
+                <div className="flex flex-col gap-4 dark:bg-[#2B2B2B] bg-[#FFFFFF]">
                     <Outlet />
                 </div>
             </SidebarInset>

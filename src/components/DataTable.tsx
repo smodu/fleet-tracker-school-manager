@@ -154,7 +154,7 @@ export function DataTable() {
     })
 
     return (
-        <div className="w-full text-white">
+        <div className="w-full text-black dark:text-white">
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Filter drivers..."
