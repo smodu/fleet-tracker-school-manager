@@ -57,6 +57,7 @@ import {
 import { Bus, Users, Settings, School, MessageCircle, LayoutDashboard } from "lucide-react"
 import { Outlet } from 'react-router-dom'
 import { useLocation } from "react-router-dom"
+import { useState } from "react"
 
 const data = {
     user: {
@@ -202,16 +203,22 @@ export default function Layout() {
         return routesWithChildren[pathname as keyof typeof routesWithChildren];
     };
 
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
     return (
         <SidebarProvider>
             <Sidebar className="border-r border-gray-500 " collapsible="icon">
-                <SidebarHeader className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white p-6">
-                    <div className={`flex font-bold`}>
-                        <h1 className="text-purple-500">Fleet</h1>
-                        <h1 className="ml-1">Tracker</h1>
-                        <h3 className="text-xs text-gray-400 mx-2">school</h3>
-                    </div>
-                </SidebarHeader>
+                {
+                    !isSidebarCollapsed && (
+                        <SidebarHeader className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white p-6">
+                        <div className={`flex font-bold`}>
+                            <h1 className="text-purple-500">Fleet</h1>
+                            <h1 className="ml-1">Tracker</h1>
+                            <h3 className="text-xs text-gray-400 mx-2">school</h3>
+                        </div>
+                    </SidebarHeader>
+                    )
+                }
                 <SidebarContent className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white">
                     <SidebarGroup className="">
                         <SidebarGroupLabel className="text-gray-500/90 ">Platform</SidebarGroupLabel>
@@ -349,7 +356,10 @@ export default function Layout() {
             <SidebarInset>
                 <header className=" bg-white dark:bg-[#2B2B2B] border-b border-gray-500 text-black dark:text-white flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                     <div className="flex items-center gap-2 px-4">
-                        <SidebarTrigger className="-ml-1 hover:bg-gray-500/30 rounded" />
+                        <SidebarTrigger 
+                        className="-ml-1 hover:bg-gray-500/30 rounded"
+                        onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                        />
                         <Separator orientation="vertical" className="mr-2 h-4 bg-white" />
                         <Breadcrumb>
                             <BreadcrumbList>
