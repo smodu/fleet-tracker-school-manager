@@ -12,8 +12,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { ReactNode } from 'react';
 
-const DatePicker = () => {
+interface DatePickerProps {
+  selected?: Date | null;
+  onSelect?: (date: Date | null) => void;
+  className?: string;
+  id?: string;
+  children?: ReactNode;
+}
+
+const DatePicker: React.FC<DatePickerProps> = () => {
   const [date, setDate] = React.useState<Date>()
 
   return (

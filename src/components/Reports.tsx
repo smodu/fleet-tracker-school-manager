@@ -6,19 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DatePickerWithRange } from "@/components/ui/date-range-picker"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Download, FileText } from 'lucide-react'
+import { Download } from 'lucide-react'
 import { addDays, format } from "date-fns"
 import { DateRange } from "react-day-picker"
 import { sampleReportData } from './reportSampleData'
 
 type ReportType = 'students' | 'parents' | 'drivers' | 'vehicles' | 'fuel' | 'maintenance' | 'financial'
-
-interface ReportData {
-  id: string
-  date: string
-  value: number
-  details: string
-}
 
 const reportTypes: { value: ReportType; label: string }[] = [
   { value: 'students', label: 'Students Report' },

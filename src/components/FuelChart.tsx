@@ -17,7 +17,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { useTheme } from "./theme-provider"
 
 export const description = "A linear area chart"
 
@@ -38,7 +37,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function FuelChart() {
-  const theme = useTheme()
   return (
     <Card className="border-hidden">
       <CardHeader className="relative flex flex-row justify-between w-full items-center">
@@ -73,7 +71,6 @@ export function FuelChart() {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dot" hideLabel />}
-              className="bg-[#111] text-white"
             />
             <Area
               dataKey="desktop"

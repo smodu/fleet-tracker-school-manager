@@ -13,7 +13,6 @@ interface Student {
   lastName: string
   age: number
   grade: string
-  note: string
   assignedRoute: string
   parentId: string
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,11 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -21,16 +19,24 @@ import {
 import '../App.css'
 
 const Notifications = () => {
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [notificationMessage, setNotificationMessage] = useState("");
     const [notificationType, setNotificationType] = useState("");
     const [recipientGroup, setRecipientGroup] = useState("");
     const [isScheduled, setIsScheduled] = useState(false);
-    const [scheduledDate, setScheduledDate] = useState(null);
+    const [scheduledDate, setScheduledDate] = useState<Date | null>(null);
     const [scheduledTime, setScheduledTime] = useState("");
-    const [scheduledNotifications, setScheduledNotifications] = useState([]);
-    const [data] = useState([
+    const [scheduledNotifications, setScheduledNotifications] = useState<{
+        id: number;
+        type: string;
+        message: string;
+        recipients: string;
+        date: string | null;
+        time: string | null;
+      }[]>([]); 
+      
+       const [data] = useState([
         { sender: "Mohammed (driver)", receiver: "Fettah (parent)", type: "Waiting", message: "I am waiting for the kid near the house", date: "2024-11-14" },
         { sender: "Amine (parent)", receiver: "Sarah (driver)", type: "Concern", message: "Please ensure the child has his bag", date: "2024-11-14" },
         { sender: "Ahmed (driver)", receiver: "Khadija (parent)", type: "Drop Off", message: "The child has been dropped off at home", date: "2024-11-13" },
@@ -105,29 +111,29 @@ const Notifications = () => {
         { type: "Attendance_reminder", message: "Attendance reminder: Please mark your attendance." },
     ];
 
-
-    // Function to filter notifications
     const filteredNotifications = notifications.filter(notification => {
         const matchesSearch = notification.message.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesDate = selectedDate ? notification.date === selectedDate : true;
+        const matchesDate = selectedDate 
+        ? notification.date === selectedDate.toISOString().split('T')[0] 
+        : true;
         return matchesSearch && matchesDate;
     });
 
-    const formatDate = (date) => {
+    const formatDate = (date: Date) => {
         return date.toLocaleDateString("en-US", {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         });
-    };
+      };
 
-    const handleTypeChange = (selectedType) => {
+    const handleTypeChange = (selectedType: string) => {
         setNotificationType(selectedType);
         const selectedNotification = notificationTypes.find((n) => n.type === selectedType);
         setNotificationMessage(selectedNotification?.message || "");
     };
 
-    const handleFilterChange = (e) => {
+    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFilters({ ...filters, [name]: value });
     };
@@ -140,15 +146,15 @@ const Notifications = () => {
         );
     });
 
-    const handleSendNotification = (e) => {
+    const handleSendNotification = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newNotification = {
-            id: scheduledNotifications.length + 1, // Temporary ID
+            id: scheduledNotifications.length + 1,
             type: notificationType,
             message: notificationMessage,
             recipients: recipientGroup,
-            date: isScheduled ? scheduledDate : null,
+            date: isScheduled ? scheduledDate?.toISOString().split('T')[0] || null : null,
             time: isScheduled ? scheduledTime : null,
         };
 
@@ -156,7 +162,6 @@ const Notifications = () => {
 
         console.log("Scheduled notification created:", newNotification);
 
-        // Reset form
         setNotificationMessage("");
         setNotificationType("");
         setRecipientGroup("");
@@ -165,22 +170,21 @@ const Notifications = () => {
         setScheduledTime("");
     };
 
-    const handleEdit = (id) => {
+    const handleEdit = (id: number) => {
         const notificationToEdit = scheduledNotifications.find((n) => n.id === id);
         if (notificationToEdit) {
             setNotificationType(notificationToEdit.type);
             setNotificationMessage(notificationToEdit.message);
             setRecipientGroup(notificationToEdit.recipients);
             setIsScheduled(!!notificationToEdit.date);
-            setScheduledDate(notificationToEdit.date);
-            setScheduledTime(notificationToEdit.time);
+            setScheduledDate(notificationToEdit.date ? new Date(notificationToEdit.date) : null);
+        setScheduledTime(notificationToEdit.time || "");
 
-            // Remove the notification to replace it on form submit
             setScheduledNotifications((prev) => prev.filter((n) => n.id !== id));
         }
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = (id: number) => {
         setScheduledNotifications((prev) => prev.filter((n) => n.id !== id));
     };
 
@@ -214,7 +218,7 @@ const Notifications = () => {
                             <div className="w-full md:w-[280px]">
                                 <DatePicker
                                     selected={selectedDate}
-                                    onSelect={(date) => setSelectedDate(date)}
+                                    onSelect={(date: Date | null) => setSelectedDate(date)}
                                     className="bg-[#3C3C3C]  text-white p-2 rounded-md "
                                 />
                             </div>
@@ -374,7 +378,7 @@ const Notifications = () => {
                                 <div className="w-full md:w-[280px]">
                                 <DatePicker
                                     selected={selectedDate}
-                                    onSelect={(date) => setSelectedDate(date)}
+                                    onSelect={(date: Date | null) => setSelectedDate(date)}
                                     className="bg-[#3C3C3C] text-white p-2 rounded-md "
                                 />
                             </div>

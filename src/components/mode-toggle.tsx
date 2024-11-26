@@ -14,7 +14,7 @@ export function ModeToggle() {
         const handler = (e: MediaQueryListEvent) => setSystemTheme(e.matches ? 'dark' : 'light')
         mediaQuery.addEventListener('change', handler)
         return () => mediaQuery.removeEventListener('change', handler)
-    }, [])
+    }, [systemTheme])
 
     const getBorderClass = (mode: 'light' | 'dark' | 'system') => {
         if (theme === 'system') {

@@ -18,9 +18,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-import { useTheme } from "./theme-provider"
-
-
 export const description = "A bar chart"
 
 const chartData = [
@@ -40,7 +37,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function SavedMoneyChart() {
-const theme = useTheme()
 
   return (
     <Card className="border-hidden">
@@ -64,13 +60,11 @@ const theme = useTheme()
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
               className="text-white"
-              // style={{ fill: theme === 'dark' ? "#ffffff" : "#000000" }} 
               style={{ fill: "#ffffff"}} 
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
-              className="bg-[#111]"
             />
             <Bar className="" dataKey="desktop" fill="#a855f7" radius={8} />
           </BarChart>

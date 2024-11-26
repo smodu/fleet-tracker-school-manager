@@ -1,5 +1,4 @@
 import Vehicles from "@/components/Vehicles"
-import Drivers from "@/components/Drivers"
 
 const FleetManagement = () => {
   return (

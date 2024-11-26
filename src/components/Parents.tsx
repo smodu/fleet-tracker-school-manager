@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Pencil, Trash2, Upload, Download, MessageCircle, Mail, User } from 'lucide-react'
+import { Pencil, Trash2, Upload, Download, MessageCircle, Mail } from 'lucide-react'
 import * as XLSX from 'xlsx'
 
 interface Kid {

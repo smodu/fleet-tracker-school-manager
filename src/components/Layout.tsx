@@ -5,12 +5,8 @@ import {
     Bell,
     ChevronRight,
     ChevronsUpDown,
-    Folder,
-    Forward,
     LogOut,
-    MoreHorizontal,
     Sparkles,
-    Trash2,
 } from "lucide-react"
 
 import {
@@ -50,7 +46,6 @@ import {
     SidebarHeader,
     SidebarInset,
     SidebarMenu,
-    SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSub,
@@ -204,8 +199,7 @@ export default function Layout() {
             '/settings/language': 'Options',
             '/settings/support': 'Help Center'
         };
-
-        return routesWithChildren[pathname];
+        return routesWithChildren[pathname as keyof typeof routesWithChildren];
     };
 
     return (

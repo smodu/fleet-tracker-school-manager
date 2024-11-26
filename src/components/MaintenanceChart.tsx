@@ -17,7 +17,6 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import { useTheme } from "./theme-provider"
 
 export const description = "A stacked area chart with expand stacking"
 
@@ -46,7 +45,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function MaintenanceChart() {
-    const theme = useTheme()
     return (
         <Card className="border-none">
             <CardHeader className="relative flex flex-row justify-between w-full items-center">
@@ -83,8 +81,6 @@ export function MaintenanceChart() {
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="line" />}
-                            
-                            className="bg-[#111] text-white"
                         />
                         <Area
                             dataKey="brakes"

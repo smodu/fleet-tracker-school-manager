@@ -16,6 +16,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from './components/mode-toggle'
 import { LanguageSelector } from './components/language-selector'
 import { SupportContact } from './pages/Support'
+import LiveMap from './pages/live-map'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="reports" element={<Reports />} />
+          <Route path="live-map" element={<LiveMap />} />
           <Route path="fleet-management" element={<FleetManagement />} />
           <Route path="fleet-management/drivers" element={<Drivers />} />
           <Route path="fleet-management/routes" element={<RoutesManagement />} />
