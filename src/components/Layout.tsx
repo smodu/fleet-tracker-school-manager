@@ -175,32 +175,55 @@ const data = {
 
 export default function Layout() {
     const { pathname } = useLocation();
-    // const currentPath = pathname.replace(/^\/|\/$/g, '').replace(/^\w/, (c) => c.toUpperCase());
-    const currentPath = pathname
-        .replace(/^\/|\/$/g, '')                // Remove leading and trailing slashes
-        .replace(/-/g, ' ')                     // Replace hyphens with spaces
-        .split('/')                             // Split by remaining slashes
-        .map(part =>                            // For each part
-            part.replace(/^\w/, c => c.toUpperCase())  // Capitalize first letter
-        )
-        .join('/');
+    // const currentPath = pathname
+    //     .replace(/^\/|\/$/g, '')                // Remove leading and trailing slashes
+    //     .replace(/-/g, ' ')                     // Replace hyphens with spaces
+    //     .split('/')                             // Split by remaining slashes
+    //     .map(part =>                            // For each part
+    //         part.replace(/^\w/, c => c.toUpperCase())  // Capitalize first letter
+    //     )
+    //     .join('/');
 
     const hasChildComponent = () => {
-        // Add routes that have child components
-        const routesWithChildren = {
-            '/': 'Overview',
-            '/reports': 'Analysis',
-            '/live-map': 'Map View',
-            '/fleet-management/vehicles': 'List',
-            '/fleet-management/drivers': 'List',
-            '/fleet-management/routes': 'Routes List',
-            '/student-management/students': 'Directory',
-            '/student-management/parents': 'Directory',
-            '/settings/theme': 'Preferences',
-            '/settings/language': 'Options',
-            '/settings/support': 'Help Center'
+        const pathSegments = pathname.split('/').filter(Boolean);
+
+        // Handle root route
+        if (pathSegments.length === 0) {
+            return { category: 'Dashboard', subcategory: 'Overview' };
+        }
+
+        // Specific routes mapping
+        const specificRoutes = {
+            'messages': { category: 'Messages', subcategory: 'Inbox' },
+            'notifications': { category: 'Notifications', subcategory: 'Alerts' },
+            'reports': { category: 'Dashboard', subcategory: 'Reports' },
+            'live-map': { category: 'Dashboard', subcategory: 'Live Map' },
+            'settings/theme': { category: 'Settings', subcategory: 'Theme' },
+            'settings/language': { category: 'Settings', subcategory: 'Language' },
+            'settings/support': { category: 'Settings', subcategory: 'Support' }
         };
-        return routesWithChildren[pathname as keyof typeof routesWithChildren];
+
+        // Check if current path matches specific routes
+        const specificRoute = specificRoutes[pathname.slice(1) as keyof typeof specificRoutes];
+        if (specificRoute) return specificRoute;
+
+        // Fallback to existing logic for other routes
+        const matchingRoute = data.navMain.find(route =>
+            route.url.slice(1) === pathSegments[0]
+        );
+
+        if (matchingRoute) {
+            const subcategory = matchingRoute.items.find(item =>
+                item.url === pathname
+            );
+
+            return {
+                category: matchingRoute.title,
+                subcategory: subcategory ? subcategory.title : pathSegments[1] || ''
+            };
+        }
+
+        return null;
     };
 
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -211,12 +234,12 @@ export default function Layout() {
                 {
                     !isSidebarCollapsed && (
                         <SidebarHeader className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white p-6">
-                        <div className={`flex font-bold`}>
-                            <h1 className="text-purple-500">Fleet</h1>
-                            <h1 className="ml-1">Tracker</h1>
-                            <h3 className="text-xs text-gray-400 mx-2">school</h3>
-                        </div>
-                    </SidebarHeader>
+                            <div className={`flex font-bold`}>
+                                <h1 className="text-purple-500">Fleet</h1>
+                                <h1 className="ml-1">Tracker</h1>
+                                <h3 className="text-xs text-gray-400 mx-2">school</h3>
+                            </div>
+                        </SidebarHeader>
                     )
                 }
                 <SidebarContent className="bg-white dark:bg-[#2B2B2B] text-black dark:text-white">
@@ -267,7 +290,7 @@ export default function Layout() {
                                             <span>{item.name}</span>
                                         </a>
                                     </SidebarMenuButton>
-                                    
+
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
@@ -356,23 +379,21 @@ export default function Layout() {
             <SidebarInset>
                 <header className=" bg-white dark:bg-[#2B2B2B] border-b border-gray-500 text-black dark:text-white flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                     <div className="flex items-center gap-2 px-4">
-                        <SidebarTrigger 
-                        className="-ml-1 hover:bg-gray-500/30 rounded"
-                        onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                        <SidebarTrigger
+                            className="-ml-1 hover:bg-gray-500/30 rounded"
+                            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                         />
                         <Separator orientation="vertical" className="mr-2 h-4 bg-white" />
                         <Breadcrumb>
                             <BreadcrumbList>
-                                <BreadcrumbItem className="block">
-                                    <BreadcrumbLink className="text-black dark:text-white">
-                                        {pathname === '/' ? 'Dashboard' : currentPath}
-                                    </BreadcrumbLink>
-                                </BreadcrumbItem>
                                 {hasChildComponent() && (
                                     <>
-                                        <BreadcrumbSeparator className="block" />
                                         <BreadcrumbItem>
-                                            <BreadcrumbPage>{hasChildComponent()}</BreadcrumbPage>
+                                            <BreadcrumbLink>{hasChildComponent()?.category}</BreadcrumbLink>
+                                        </BreadcrumbItem>
+                                        <BreadcrumbSeparator />
+                                        <BreadcrumbItem>
+                                            <BreadcrumbPage>{hasChildComponent()?.subcategory}</BreadcrumbPage>
                                         </BreadcrumbItem>
                                     </>
                                 )}

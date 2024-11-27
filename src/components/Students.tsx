@@ -85,7 +85,7 @@ export default function Students() {
   }
 
   return (
-    <div className="flex flex-col gap-10 text-white p-4">
+    <div className="flex flex-col gap-10 text-black dark:text-white p-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <h1 className="font-bold text-lg">{editingId !== null ? 'Edit student' : 'Add new student'}</h1>
         <Input
@@ -136,7 +136,7 @@ export default function Students() {
           onChange={handleInputChange}
           required
         />
-        <Button type="submit" className="w-full max-w-20 bg-white text-black hover:bg-white/50">
+        <Button type="submit" className="w-full max-w-20 bg-black dark:bg-white text-white dark:text-black hover:bg-black/30 dark:hover:bg-white/50">
           {editingId !== null ? 'Update' : 'Add'}
         </Button>
       </form>
@@ -169,31 +169,31 @@ export default function Students() {
           <Table>
             <TableHeader>
               <TableRow className="border-gray-700">
-                <TableHead className="text-gray-300">First Name</TableHead>
-                <TableHead className="text-gray-300">Last Name</TableHead>
-                <TableHead className="text-gray-300">Age</TableHead>
-                <TableHead className="text-gray-300">Grade</TableHead>
-                <TableHead className="text-gray-300">Assigned Route</TableHead>
-                <TableHead className="text-gray-300">Parent ID</TableHead>
-                <TableHead className="text-gray-300">Actions</TableHead>
+                <TableHead className="text-black dark:text-gray-300">First Name</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Last Name</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Age</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Grade</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Assigned Route</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Parent ID</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {students.map((student) => (
                 <TableRow key={student.id} className="border-gray-700">
-                  <TableCell className="text-gray-100">{student.firstName}</TableCell>
-                  <TableCell className="text-gray-100">{student.lastName}</TableCell>
-                  <TableCell className="text-gray-100">{student.age}</TableCell>
-                  <TableCell className="text-gray-100">{student.grade}</TableCell>
-                  <TableCell className="text-gray-100">{student.assignedRoute}</TableCell>
-                  <TableCell className="text-gray-100">{student.parentId}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{student.firstName}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{student.lastName}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{student.age}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{student.grade}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{student.assignedRoute}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{student.parentId}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
                         onClick={() => handleEdit(student)}
                         size="icon"
                         variant="outline"
-                        className="border-gray-500 text-gray-300 hover:bg-gray-700"
+                        className="border-gray-500 text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
                         aria-label={`Edit student ${student.firstName} ${student.lastName}`}
                       >
                         <Pencil className="h-4 w-4" />

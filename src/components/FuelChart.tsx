@@ -17,6 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useTheme } from "./theme-provider"
 
 export const description = "A linear area chart"
 
@@ -37,6 +38,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function FuelChart() {
+  const theme = useTheme()
   return (
     <Card className="border-hidden">
       <CardHeader className="relative flex flex-row justify-between w-full items-center">
@@ -44,8 +46,8 @@ export function FuelChart() {
           <CardTitle className="text-black dark:text-white">Fuel consumed</CardTitle>
           <CardDescription className="text-gray-400">January - June 2024</CardDescription>
         </div>
-        <div className="hover:bg-gray-500/30 cursor-pointer p-2 rounded absolute top-2 right-2">
-          <CalendarDays color="white" />
+        <div className="hover:bg-gray-300/30 dark:hover:bg-gray-500/30 cursor-pointer p-2 rounded absolute top-2 right-2">
+          <CalendarDays color={`${theme.theme === 'dark' ? 'white' : 'black'}`} />
         </div>
       </CardHeader>
       <CardContent>
@@ -65,12 +67,11 @@ export function FuelChart() {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
-              // style={{ fill: theme === 'dark' ? "#ffffff" : "#000000" }}
-              style={{ fill: "#ffffff"}}
+              style={{fill: theme.theme === 'dark' ? "#fff" : "#000" }} 
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="dot" hideLabel />}
+              content={<ChartTooltipContent className={`${theme.theme === 'dark' ? "bg-white text-black" : "bg-black text-white"}`} indicator="dot" hideLabel />}
             />
             <Area
               dataKey="desktop"

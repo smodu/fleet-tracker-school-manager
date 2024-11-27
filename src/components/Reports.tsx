@@ -107,7 +107,7 @@ export default function Reports() {
           </CardHeader>
           <CardContent>
             <Select onValueChange={(value) => setSelectedReport(value as ReportType)} defaultValue={selectedReport}>
-              <SelectTrigger className="bg-gray-400 dark:bg-[#3C3C3C] text-white dark:text-gray-400 border-hidden">
+              <SelectTrigger className="bg-white dark:bg-[#3C3C3C] text-black dark:text-gray-400 border-hidden">
                 <SelectValue placeholder="Select a report type" />
               </SelectTrigger>
               <SelectContent className="bg-[#3C3C3C] text-white">

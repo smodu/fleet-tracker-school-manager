@@ -34,9 +34,9 @@ const Notifications = () => {
         recipients: string;
         date: string | null;
         time: string | null;
-      }[]>([]); 
-      
-       const [data] = useState([
+    }[]>([]);
+
+    const [data] = useState([
         { sender: "Mohammed (driver)", receiver: "Fettah (parent)", type: "Waiting", message: "I am waiting for the kid near the house", date: "2024-11-14" },
         { sender: "Amine (parent)", receiver: "Sarah (driver)", type: "Concern", message: "Please ensure the child has his bag", date: "2024-11-14" },
         { sender: "Ahmed (driver)", receiver: "Khadija (parent)", type: "Drop Off", message: "The child has been dropped off at home", date: "2024-11-13" },
@@ -113,19 +113,19 @@ const Notifications = () => {
 
     const filteredNotifications = notifications.filter(notification => {
         const matchesSearch = notification.message.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesDate = selectedDate 
-        ? notification.date === selectedDate.toISOString().split('T')[0] 
-        : true;
+        const matchesDate = selectedDate
+            ? notification.date === selectedDate.toISOString().split('T')[0]
+            : true;
         return matchesSearch && matchesDate;
     });
 
     const formatDate = (date: Date) => {
         return date.toLocaleDateString("en-US", {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
-      };
+    };
 
     const handleTypeChange = (selectedType: string) => {
         setNotificationType(selectedType);
@@ -178,7 +178,7 @@ const Notifications = () => {
             setRecipientGroup(notificationToEdit.recipients);
             setIsScheduled(!!notificationToEdit.date);
             setScheduledDate(notificationToEdit.date ? new Date(notificationToEdit.date) : null);
-        setScheduledTime(notificationToEdit.time || "");
+            setScheduledTime(notificationToEdit.time || "");
 
             setScheduledNotifications((prev) => prev.filter((n) => n.id !== id));
         }
@@ -188,20 +188,36 @@ const Notifications = () => {
         setScheduledNotifications((prev) => prev.filter((n) => n.id !== id));
     };
 
-
-
     return (
-        <Card className="w-full min-h-screen mx-auto bg-[#2B2B2B] border-hidden rounded-none">
+        <Card className="w-full min-h-screen mx-auto bg-white dark:bg-[#2B2B2B] border-hidden rounded-none">
             <CardContent className="p-6">
                 <Tabs defaultValue="foryou" className="w-full">
-                    <TabsList className="w-full mb-6 bg-[#3C3C3C] p-1 rounded-md">
-                        <TabsTrigger value="foryou" className="flex-1 data-[state=active]:bg-[#4C4C4C] data-[state=active]:text-white text-white">
+                    <TabsList className="w-full mb-6 bg-gray-200 dark:bg-[#3C3C3C] p-1 rounded-md">
+                        <TabsTrigger
+                            value="foryou"
+                            className="flex-1 
+                        data-[state=active]:bg-gray-300 dark:data-[state=active]:bg-[#4C4C4C] 
+                        text-black dark:text-white 
+                        data-[state=active]:text-black dark:data-[state=active]:text-white"
+                        >
                             For you
                         </TabsTrigger>
-                        <TabsTrigger value="send" className="flex-1 data-[state=active]:bg-[#4C4C4C] data-[state=active]:text-white text-white">
+                        <TabsTrigger
+                            value="send"
+                            className="flex-1 
+                        data-[state=active]:bg-gray-300 dark:data-[state=active]:bg-[#4C4C4C] 
+                        text-black dark:text-white 
+                        data-[state=active]:text-black dark:data-[state=active]:text-white"
+                        >
                             Send
                         </TabsTrigger>
-                        <TabsTrigger value="logs" className="flex-1 data-[state=active]:bg-[#4C4C4C] data-[state=active]:text-white text-white">
+                        <TabsTrigger
+                            value="logs"
+                            className="flex-1 
+                        data-[state=active]:bg-gray-300 dark:data-[state=active]:bg-[#4C4C4C] 
+                        text-black dark:text-white 
+                        data-[state=active]:text-black dark:data-[state=active]:text-white"
+                        >
                             Logs
                         </TabsTrigger>
                     </TabsList>
@@ -213,22 +229,29 @@ const Notifications = () => {
                                 placeholder="Search notifications..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className=" bg-[#2B2B2B] w-full placeholder:text-gray-300 placeholder:px-2 text-white p-2 rounded-md border-gray-300"
+                                className="bg-gray-100 dark:bg-[#2B2B2B] 
+                   w-full 
+                   placeholder:text-gray-500 dark:placeholder:text-gray-300 
+                   text-black dark:text-white 
+                   p-2 rounded-md 
+                   border border-gray-300 dark:border-gray-700"
                             />
                             <div className="w-full md:w-[280px]">
                                 <DatePicker
                                     selected={selectedDate}
                                     onSelect={(date: Date | null) => setSelectedDate(date)}
-                                    className="bg-[#3C3C3C]  text-white p-2 rounded-md "
+                                    className="bg-red-500 dark:bg-[#3C3C3C] text-black dark:text-white p-2 rounded-md border border-gray-300 dark:border-gray-700"
                                 />
                             </div>
                         </div>
                         <div className="py-4">
-                            <h1>{selectedDate ? formatDate(selectedDate) : formatDate(new Date())}</h1>
+                            <h1 className="text-black dark:text-white">
+                                {selectedDate ? formatDate(selectedDate) : formatDate(new Date())}
+                            </h1>
                         </div>
                         <div className="flex flex-col gap-4">
-                            {filteredNotifications.map(notification => (
-                                <div key={notification.id} className="flex md:max-w-xl w-full flex-col gap-2 bg-[#4C4C4C] p-4 rounded-lg">
+                            {filteredNotifications.map((notification: any) => (
+                                <div key={notification.id} className="flex md:max-w-xl w-full flex-col gap-2 bg-gray-200 dark:bg-[#4C4C4C] p-4 rounded-lg text-black dark:text-white">
                                     <div className="flex justify-between">
                                         <h1 className={`font-bold ${notification.priority == 'low' ? 'text-yellow-500' : notification.priority == 'medium' ? 'text-purple-500' : notification.priority == 'high' ? 'text-orange-500' : 'text-red-500'}`}>{notification.type}</h1>
                                         <p className={`text-sm`}>{notification.time}</p>
@@ -246,9 +269,9 @@ const Notifications = () => {
                         <h2 className="text-xl font-semibold mb-4 hidden">Send Notifications</h2>
                         <form onSubmit={handleSendNotification} className="space-y-4">
                             <div>
-                                <Label className="text-white" htmlFor="type">Notification Type</Label>
+                                <Label className="text-black dark:text-white" htmlFor="type">Notification Type</Label>
                                 <Select onValueChange={handleTypeChange} required>
-                                    <SelectTrigger className="bg-[#2B2B2B] mt-2 w-full text-gray-300 placeholder:px-2  p-2 rounded-md border-gray-300">
+                                    <SelectTrigger className="bg-white dark:bg-[#2B2B2B] mt-2 w-full text-gray-500 dark:text-gray-300 placeholder:px-2 p-2 rounded-md border-gray-300">
                                         <SelectValue placeholder="Select notification type" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-[#3C3C3C] text-white">
@@ -261,20 +284,20 @@ const Notifications = () => {
                                 </Select>
                             </div>
                             <div>
-                                <Label className="text-white" htmlFor="message">Notification Message</Label>
+                                <Label className="text-black dark:text-white" htmlFor="message">Notification Message</Label>
                                 <Textarea
                                     id="message"
                                     placeholder="Enter your notification message here..."
                                     value={notificationMessage}
                                     onChange={(e) => setNotificationMessage(e.target.value)}
-                                    className="bg-[#2B2B2B] w-full placeholder:text-gray-300 placeholder:px-2 text-white p-2 rounded-md border-gray-300 mt-2 "
+                                    className="bg-white dark:bg-[#2B2B2B] w-full placeholder:text-gray-500 dark:placeholder:text-gray-300 placeholder:px-2 text-black dark:text-white p-2 rounded-md border-gray-300 mt-2 "
                                     required
                                 />
                             </div>
                             <div>
-                                <Label className="text-white" htmlFor="recipients">Recipients</Label>
+                                <Label className="text-black dark:text-white" htmlFor="recipients">Recipients</Label>
                                 <Select onValueChange={setRecipientGroup} required>
-                                    <SelectTrigger className="bg-[#2B2B2B] w-full text-gray-300 placeholder:px-2 p-2 rounded-md border-gray-300 mt-2">
+                                    <SelectTrigger className="bg-white dark:bg-[#2B2B2B] w-full text-gray-500 dark:text-gray-300 placeholder:px-2 p-2 rounded-md border-gray-300 mt-2">
                                         <SelectValue placeholder="Select recipients" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-[#3C3C3C] text-white">
@@ -297,19 +320,18 @@ const Notifications = () => {
                                 <div className="flex space-x-4 items-center">
 
                                     <div className="flex-1 flex flex-col w-full">
-                                        <Label className="mb-2" htmlFor="time">Time</Label>
+                                        <Label className="mb-2 text-black dark:text-gray-400" htmlFor="time">Time</Label>
                                         <Input
                                             id="time"
                                             type="time"
                                             value={scheduledTime}
                                             onChange={(e) => setScheduledTime(e.target.value)}
-                                            className="bg-transparent text-white w-full"
+                                            className="bg-transparent text-black dark:text-white w-full border border-black"
                                         />
-
                                     </div>
 
                                     <div className=" flex-1 flex flex-col w-full">
-                                        <Label className="mb-2" htmlFor="date">Date</Label>
+                                        <Label className="mb-2 text-black dark:text-gray-400" htmlFor="date">Date</Label>
                                         <DatePicker
                                             id="date"
                                             selected={scheduledDate}
@@ -321,25 +343,25 @@ const Notifications = () => {
 
                                 </div>
                             )}
-                            <Button type="submit" className="bg-white text-black hover:bg-white/50" >
+                            <Button type="submit" className="bg-black dark:bg-white text-white dark:text-black hover:bg-black/80 dark:hover:bg-white/50" >
                                 {isScheduled ? "Schedule Notification" : "Send Notification"}
                             </Button>
                         </form>
 
                         <div className="w-full mt-10 flex flex-col gap-2">
-                            <h2 className="font-semibold mb-4">Scheduled Notifications</h2>
+                            <h2 className="font-semibold mb-4 text-black dark:text-gray-400">Scheduled Notifications</h2>
                             <div className="flex flex-col gap-4">
                                 {scheduledNotifications.map((notification) => (
-                                    <div key={notification.id} className="flex md:max-w-xl w-full flex-col gap-2 bg-[#4C4C4C] p-4 rounded-lg">
+                                    <div key={notification.id} className="flex md:max-w-xl w-full flex-col gap-2 bg-gray-200 dark:bg-[#4C4C4C] p-4 rounded-lg">
                                         <div className="flex justify-between">
-                                            <h1 className="font-bold text-white">{notification.type.replace("_", " ")}</h1>
-                                            <p className="text-sm">{notification.time || "N/A"}</p>
+                                            <h1 className="font-bold text-black dark:text-white">{notification.type.replace("_", " ")}</h1>
+                                            <p className="text-sm text-gray-500 dark:text-gray-300">{notification.time || "N/A"}</p>
                                         </div>
                                         <div>
-                                            <h3 className="text-xs">{notification.message}</h3>
+                                            <h3 className="text-xs text-gray-500 dark:text-gray-300">{notification.message}</h3>
                                         </div>
                                         <div className="flex gap-2 mt-2">
-                                            <Button variant={'outline'} onClick={() => handleEdit(notification.id)} >
+                                            <Button className="text-gray-500 dark:text-gray-300" variant={'outline'} onClick={() => handleEdit(notification.id)} >
                                                 Edit
                                             </Button>
                                             <Button onClick={() => handleDelete(notification.id)} className="bg-red-500 text-white">
@@ -354,7 +376,7 @@ const Notifications = () => {
                     </TabsContent>
 
                     {/* Logs Tab */}
-                    <TabsContent value="logs" className="text-gray-300">
+                    <TabsContent value="logs" className="text-gray-600 dark:text-gray-300">
                         <h2 className="text-xl font-semibold mb-4">Notification between users</h2>
                         <div>
                             {/* Filter Inputs */}
@@ -363,7 +385,7 @@ const Notifications = () => {
                                     type="text"
                                     name="sender"
                                     placeholder="Filter by sender"
-                                    className="bg-[#3C3C3C] text-white p-2 rounded-md"
+                                    className="bg-gray-200 dark:bg-[#3C3C3C] text-white p-2 rounded-md"
                                     value={filters.sender}
                                     onChange={handleFilterChange}
                                 />
@@ -371,21 +393,21 @@ const Notifications = () => {
                                     type="text"
                                     name="receiver"
                                     placeholder="Filter by receiver"
-                                    className="bg-[#3C3C3C] text-white p-2 rounded-md"
+                                    className="bg-gray-200 bg-[#3C3C3C] text-white p-2 rounded-md"
                                     value={filters.receiver}
                                     onChange={handleFilterChange}
                                 />
                                 <div className="w-full md:w-[280px]">
-                                <DatePicker
-                                    selected={selectedDate}
-                                    onSelect={(date: Date | null) => setSelectedDate(date)}
-                                    className="bg-[#3C3C3C] text-white p-2 rounded-md "
-                                />
-                            </div>
+                                    <DatePicker
+                                        selected={selectedDate}
+                                        onSelect={(date: Date | null) => setSelectedDate(date)}
+                                        className="bg-[#3C3C3C] text-white p-2 rounded-md "
+                                    />
+                                </div>
                             </div>
 
                             <div className="py-4">
-                            <h1>{selectedDate ? formatDate(selectedDate) : formatDate(new Date())}</h1>
+                                <h1>{selectedDate ? formatDate(selectedDate) : formatDate(new Date())}</h1>
                             </div>
 
                             {/* Table */}

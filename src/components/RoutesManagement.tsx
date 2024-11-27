@@ -178,7 +178,7 @@ export default function RoutesManagement() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col gap-10 text-white p-4">
+    <div className="flex min-h-screen flex-col gap-10 text-black dark:text-white p-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <h1 className="font-bold text-lg">{editingId !== null ? 'Edit route' : 'Create new route'}</h1>
         <Input
@@ -302,29 +302,29 @@ export default function RoutesManagement() {
           <Table>
             <TableHeader>
               <TableRow className="border-gray-700">
-                <TableHead className="text-gray-300">Name</TableHead>
-                <TableHead className="text-gray-300">Start Location</TableHead>
-                <TableHead className="text-gray-300">End Location</TableHead>
-                <TableHead className="text-gray-300">Assigned Vehicle</TableHead>
-                <TableHead className="text-gray-300">Assigned Students</TableHead>
-                <TableHead className="text-gray-300">Actions</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Name</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Start Location</TableHead>
+                <TableHead className="text-black dark:text-gray-300">End Location</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Assigned Vehicle</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Assigned Students</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {routes.map((route) => (
                 <TableRow key={route.id} className="border-gray-700">
-                  <TableCell className="text-gray-100">{route.name}</TableCell>
-                  <TableCell className="text-gray-100">{route.startLocationName}</TableCell>
-                  <TableCell className="text-gray-100">{route.endLocationName}</TableCell>
-                  <TableCell className="text-gray-100">{route.assignedVehicle?.number || 'None'}</TableCell>
-                  <TableCell className="text-gray-100">{route.assignedStudents.map(s => s.name).join(', ')}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{route.name}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{route.startLocationName}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{route.endLocationName}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{route.assignedVehicle?.number || 'None'}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{route.assignedStudents.map(s => s.name).join(', ')}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
                         onClick={() => handleEdit(route)}
                         size="icon"
                         variant="outline"
-                        className="border-gray-500 text-gray-300 hover:bg-gray-700"
+                        className="border-gray-500 text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
                         aria-label={`Edit route ${route.name}`}
                       >
                         <Pencil className="h-4 w-4" />

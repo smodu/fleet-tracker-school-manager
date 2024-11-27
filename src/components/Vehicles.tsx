@@ -53,7 +53,7 @@ export default function Vehicles() {
   }
 
   return (
-    <div className="flex flex-col gap-10 text-white p-4">
+    <div className="flex flex-col gap-10 text-black dark:text-white p-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <h1 className="font-bold text-lg">{editingId !== null ? 'Edit vehicle' : 'Create vehicle'}</h1>
         <Input
@@ -80,7 +80,7 @@ export default function Vehicles() {
           onChange={handleInputChange}
           required
         />
-        <Button type="submit" className="w-full max-w-20 bg-white text-black hover:bg-white/50">
+        <Button type="submit" className="w-full max-w-20 bg-black dark:bg-white text-white dark:text-black hover:bg-black/30 dark:hover:bg-white/50">
           {editingId !== null ? 'Update' : 'Create'}
         </Button>
       </form>
@@ -90,25 +90,25 @@ export default function Vehicles() {
           <Table>
             <TableHeader>
               <TableRow className="border-gray-700">
-                <TableHead className="text-gray-300">Number</TableHead>
-                <TableHead className="text-gray-300">Driver</TableHead>
-                <TableHead className="text-gray-300">Route</TableHead>
-                <TableHead className="text-gray-300">Actions</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Number</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Driver</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Route</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {vehicles.map((vehicle) => (
                 <TableRow key={vehicle.id} className="border-gray-700">
-                  <TableCell className="text-gray-100">{vehicle.number}</TableCell>
-                  <TableCell className="text-gray-100">{vehicle.driver}</TableCell>
-                  <TableCell className="text-gray-100">{vehicle.route}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{vehicle.number}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{vehicle.driver}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{vehicle.route}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
                         onClick={() => handleEdit(vehicle)}
                         size="icon"
                         variant="outline"
-                        className="border-gray-500 text-gray-300 hover:bg-gray-700"
+                        className="border-gray-500 text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
                         aria-label={`Edit vehicle ${vehicle.number}`}
                       >
                         <Pencil className="h-4 w-4" />

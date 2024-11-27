@@ -58,14 +58,14 @@ export const Messages = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-[#2B2B2B] text-gray-200">
+    <div className="flex flex-col md:flex-row h-screen bg-[#2B2B2B] text-black dark:text-gray-200">
       {/* Contacts List */}
-      <div className={`${showContacts ? 'block' : 'hidden'} md:block w-full md:w-1/3 bg-[#333333] border-r border-[#444444] overflow-y-auto`}>
-        <h2 className="text-xl font-semibold p-4 border-b border-[#444444]">Contacts</h2>
+      <div className={`${showContacts ? 'block' : 'hidden'} md:block w-full md:w-1/3 bg-white dark:bg-[#333333] border-r border-[#444444] overflow-y-auto`}>
+        <h2 className="text-xl font-semibold p-6 border-b border-[#444444]">Contacts</h2>
         {contacts.map(contact => (
           <div
             key={contact.id}
-            className="flex items-center p-4 hover:bg-[#3A3A3A] cursor-pointer"
+            className="flex items-center p-4 hover:bg-gray-200 hover:bg-[#3A3A3A] cursor-pointer"
             onClick={() => {
               setSelectedContact(contact)
               setShowContacts(false)
@@ -85,11 +85,11 @@ export const Messages = () => {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col bg-[#2B2B2B]">
+      <div className="flex-1 flex flex-col bg-white dark:bg-[#2B2B2B]">
         {selectedContact ? (
           <>
             {/* Chat Header */}
-            <div className="bg-[#333333] border-b border-[#444444] p-4 flex items-center justify-between">
+            <div className="bg-white dark:bg-[#333333] border-b border-[#444444] p-[1.1rem] flex items-center justify-between">
               <div className="flex items-center">
                 <Button variant="ghost" size="icon" className="md:hidden mr-2" onClick={toggleContacts}>
                   <Menu className="h-5 w-5" />
@@ -122,7 +122,7 @@ export const Messages = () => {
                 >
                   <div
                     className={`max-w-xs px-4 py-2 rounded-lg ${
-                      message.senderId === 'school' ? 'bg-[#4A4A4A] text-white' : 'bg-[#3A3A3A] text-gray-200'
+                      message.senderId === 'school' ? 'bg-gray-300 dark:bg-[#4A4A4A] text-black dark:text-white' : 'bg-[#3A3A3A] text-gray-200'
                     }`}
                   >
                     <p>{message.text}</p>
@@ -148,7 +148,7 @@ export const Messages = () => {
             </form>
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center bg-[#2B2B2B]">
+          <div className="flex-1 flex items-center justify-center bg-white dark:bg-[#2B2B2B]">
             <Button variant="ghost" size="icon" className="md:hidden mr-2" onClick={toggleContacts}>
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle contacts</span>

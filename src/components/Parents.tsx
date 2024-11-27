@@ -98,7 +98,7 @@ export default function Parents() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col gap-10 text-white p-4">
+    <div className="min-h-screen flex flex-col gap-10 text-black dark:text-white p-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <h1 className="font-bold text-lg">{editingId !== null ? 'Edit parent' : 'Add new parent'}</h1>
         <Input
@@ -134,7 +134,7 @@ export default function Parents() {
           required
         />
         
-        <Button type="submit" className="w-full max-w-20 bg-white text-black hover:bg-white/50">
+        <Button type="submit" className="w-full max-w-20 bg-black dark:bg-white text-white dark:text-black hover:bg-black/30 dark:hover:bg-white/50">
           {editingId !== null ? 'Update' : 'Add'}
         </Button>
       </form>
@@ -166,22 +166,22 @@ export default function Parents() {
           <Table>
             <TableHeader>
               <TableRow className="border-gray-700">
-                <TableHead className="text-gray-300">First Name</TableHead>
-                <TableHead className="text-gray-300">Last Name</TableHead>
-                <TableHead className="text-gray-300">Email</TableHead>
-                <TableHead className="text-gray-300">Phone</TableHead>
-                <TableHead className="text-gray-300">Kids</TableHead>
-                <TableHead className="text-gray-300">Actions</TableHead>
+                <TableHead className="text-black dark:text-gray-300">First Name</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Last Name</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Email</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Phone</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Kids</TableHead>
+                <TableHead className="text-black dark:text-gray-300">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {parents.map((parent) => (
                 <TableRow key={parent.id} className="border-gray-700">
-                  <TableCell className="text-gray-100">{parent.firstName}</TableCell>
-                  <TableCell className="text-gray-100">{parent.lastName}</TableCell>
-                  <TableCell className="text-gray-100">{parent.email}</TableCell>
-                  <TableCell className="text-gray-100">{parent.phone}</TableCell>
-                  <TableCell className="text-gray-100">
+                  <TableCell className="text-black dark:text-gray-100">{parent.firstName}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{parent.lastName}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{parent.email}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">{parent.phone}</TableCell>
+                  <TableCell className="text-black dark:text-gray-100">
                     {parent.kids.map((kid) => (
                       <Button
                         key={kid.id}
@@ -199,7 +199,7 @@ export default function Parents() {
                         onClick={() => handleEdit(parent)}
                         size="icon"
                         variant="outline"
-                        className="border-gray-500 text-gray-300 hover:bg-gray-700"
+                        className="border-gray-500 text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
                         aria-label={`Edit parent ${parent.firstName} ${parent.lastName}`}
                       >
                         <Pencil className="h-4 w-4" />

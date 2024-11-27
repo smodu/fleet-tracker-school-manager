@@ -31,8 +31,8 @@ const DatePicker: React.FC<DatePickerProps> = () => {
         <Button
           variant={"outline"}
           className={cn(
-            "w-full  justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            "w-full justify-start text-left font-normal",
+            !date && "text-black dark:text-muted-foreground"
           )}
         >
           <CalendarIcon />
