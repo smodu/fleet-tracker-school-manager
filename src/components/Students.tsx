@@ -85,7 +85,7 @@ export default function Students() {
   }
 
   return (
-    <div className="flex flex-col gap-10 text-black dark:text-white p-4">
+    <div className="flex min-h-screen flex-col gap-10 text-black dark:text-white p-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <h1 className="font-bold text-lg">{editingId !== null ? 'Edit student' : 'Add new student'}</h1>
         <Input
@@ -127,6 +127,7 @@ export default function Students() {
           value={newStudent.assignedRoute}
           onChange={handleInputChange}
           required
+          className="hidden"
         />
         <Input
           type="text"

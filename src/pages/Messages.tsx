@@ -133,13 +133,13 @@ export const Messages = () => {
             </div>
 
             {/* Message Input */}
-            <form onSubmit={handleSendMessage} className="bg-[#333333] border-t border-[#444444] p-4 flex items-center">
+            <form onSubmit={handleSendMessage} className="bg-white dark:bg-[#333333] border-t border-[#444444] p-4 flex items-center">
               <Input
                 type="text"
                 placeholder="Type a message..."
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                className="flex-1 mr-4 bg-[#3A3A3A] text-gray-200 border-[#444444] focus:border-[#5A5A5A]"
+                className="flex-1 mr-4 bg-gray-300 dark:bg-[#3A3A3A] text-balck dark:text-gray-200 border-[#444444] focus:border-[#5A5A5A]"
               />
               <Button type="submit" variant="ghost">
                 <Send className="h-5 w-5" />

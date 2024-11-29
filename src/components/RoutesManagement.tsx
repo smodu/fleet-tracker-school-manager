@@ -243,7 +243,7 @@ export default function RoutesManagement() {
           </div>
         )}
 
-        <div className="space-y-2">
+        <div className="space-y-2 hidden">
           <label className="text-sm font-medium">Assign Vehicle</label>
           <Select onValueChange={handleVehicleChange} value={newRoute.assignedVehicle?.id.toString() || ''}>
             <SelectTrigger>
