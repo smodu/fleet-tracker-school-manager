@@ -1,9 +1,14 @@
+import LiveMapBox from "@/components/LiveMap"
 
 const LiveMap = () => {
+    const moroccoCenter = { lat: 31.7917, lng: -7.0926 };
+      const zoom = 5
     return (
-        <div className="min-h-screen text-white text-lg font-bold p-4 flex justify-center items-center">
-            <h1>No Map to show at the moment</h1>
-        </div>
+        <div className="max-h-[92vh] h-screen text-white text-lg font-bold flex justify-center items-start">
+      <div className="relative w-full h-full">
+        <LiveMapBox center={moroccoCenter} zoom={zoom} />
+      </div>
+    </div>
     )
 }
 
