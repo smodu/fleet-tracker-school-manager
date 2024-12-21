@@ -9,114 +9,83 @@ interface LiveMapProps {
   initialMarker?: { lat: number; lng: number } | null;
 }
 
-const LiveMapBox: React.FC<LiveMapProps> = ({ center, zoom, onLocationSelect, initialMarker  }) => {
+const LiveMapBox: React.FC<LiveMapProps> = ({ center, zoom }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<mapboxgl.Map | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [studentLocation, setStudentLocation] = useState(null)
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
 
-  const removeExistingMarker = useCallback(() => {
-    if (markerRef.current) {
-      markerRef.current.remove();
-      markerRef.current = null;
-    }
-  }, []);
+  console.log(studentLocation)
 
-  const addMarkerAndNotify = useCallback((lngLat: { lng: number; lat: number }) => {
-    if (!mapInstanceRef.current) {
-      console.warn('Map not initialized');
-      return;
-    }
+useEffect(() => {
+  mapboxgl.accessToken = import.meta.env.VITE_MapBoxPublicKey;
 
-    removeExistingMarker();
+  if (!mapContainerRef.current) return;
 
-    const marker = new mapboxgl.Marker({ 
-      color: 'red', 
-      draggable: true 
-    })
-      .setLngLat([lngLat.lng, lngLat.lat])
-      .addTo(mapInstanceRef.current);
-    
-    markerRef.current = marker;
-
-    if (onLocationSelect) {
-      onLocationSelect({ lat: lngLat.lat, lng: lngLat.lng });
-    }
-
-    marker.on('dragend', () => {
-      const newLocation = marker.getLngLat();
-      if (onLocationSelect) {
-        onLocationSelect({ 
-          lat: newLocation.lat, 
-          lng: newLocation.lng 
-        });
-      }
+  if (!mapInstanceRef.current) {
+    const mapInstance = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [center.lng, center.lat],
+      zoom,
+      attributionControl: false,
     });
 
-    mapInstanceRef.current.flyTo({ 
-      center: [lngLat.lng, lngLat.lat], 
-      zoom: Math.max(mapInstanceRef.current.getZoom(), 16) 
+    mapInstanceRef.current = mapInstance;
+
+    mapInstance.on('load', () => {
+      const WORLD_VIEW = "MA";
+      const adminLayers = [
+        'admin-0-boundary',
+        'admin-1-boundary',
+        'admin-0-boundary-disputed',
+        'admin-1-boundary-bg',
+        'admin-0-boundary-bg',
+        'country-label',
+      ];
+
+      adminLayers.forEach((adminLayer) => {
+        if (mapInstance.getLayer(adminLayer)) {
+          mapInstance.setFilter(
+            adminLayer,
+            ["match", ["get", "worldview"], ["all", WORLD_VIEW], true, false]
+          );
+        }
+      });
+
+      setIsMapLoaded(true);
+      mapInstance.resize();
+      mapInstance.getCanvas().style.cursor = 'pointer';
+
+      mapInstance.on('click', (e) => {
+        if (markerRef.current) {
+          markerRef.current.remove();
+        }
+        const marker = new mapboxgl.Marker();
+        marker.setLngLat(e.lngLat).addTo(mapInstanceRef.current);
+        
+        setStudentLocation(marker._lngLat);
+
+        markerRef.current = marker;
+      });
     });
-  }, [onLocationSelect, removeExistingMarker]);
 
-  useEffect(() => {
-    mapboxgl.accessToken = import.meta.env.VITE_MapBoxPublicKey;
+    mapInstance.on('error', (e) => {
+      console.error('Map loading error:', e);
+    });
+  }
 
-    if (!mapContainerRef.current) return;
-
-    if (!mapInstanceRef.current) {
-      const mapInstance = new mapboxgl.Map({
-        container: mapContainerRef.current,
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [center.lng, center.lat],
-        zoom,
-        attributionControl: false
-      });
-
-      mapInstanceRef.current = mapInstance;
-
-      mapInstance.on('load', () => {
-        const WORLD_VIEW = "MA";
-        const adminLayers = [
-          'admin-0-boundary',
-          'admin-1-boundary',
-          'admin-0-boundary-disputed',
-          'admin-1-boundary-bg',
-          'admin-0-boundary-bg',
-          'country-label',
-        ];
-        adminLayers.forEach((adminLayer) => {
-          if (mapInstance.getLayer(adminLayer)) {
-            mapInstance.setFilter(
-              adminLayer,
-              ["match", ["get", "worldview"], ["all", WORLD_VIEW], true, false]
-            );
-          }
-        });
-
-        setIsMapLoaded(true);
-        mapInstance.resize();
-
-        mapInstance.on('click', (e) => {
-          const { lng, lat } = e.lngLat;
-          addMarkerAndNotify({ lng, lat });
-        });
-      });
-
-      mapInstance.on('error', (e) => {
-        console.error('Map loading error:', e);
-      });
+  return () => {
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.remove();
+      mapInstanceRef.current = null;
     }
+  };
+}, [center, zoom]);
 
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-    };
-  }, [center, zoom, addMarkerAndNotify]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -129,9 +98,7 @@ const LiveMapBox: React.FC<LiveMapProps> = ({ center, zoom, onLocationSelect, in
 
     try {
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-          query
-        )}.json?access_token=${mapboxgl.accessToken}&autocomplete=true&limit=5`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}&autocomplete=true&limit=5`
       );
 
       const data = await response.json();
@@ -147,16 +114,18 @@ const LiveMapBox: React.FC<LiveMapProps> = ({ center, zoom, onLocationSelect, in
       return;
     }
 
-    const [lng, lat] = suggestion.center; 
-    
-    mapInstanceRef.current.flyTo({ 
-      center: [lng, lat], 
-      zoom: Math.max(mapInstanceRef.current.getZoom(), 16) 
+    const [lng, lat] = suggestion.center;
+
+    mapInstanceRef.current.flyTo({
+      center: [lng, lat],
+      zoom: Math.max(mapInstanceRef.current.getZoom(), 16),
     });
 
-    setSearchQuery(suggestion.place_name); 
-    setSuggestions([]); 
+    setSearchQuery(suggestion.place_name);
+    setSuggestions([]);
   }, []);
+
+
 
   return (
     <div style={{ height: '100%', width: '100%', position: 'relative' }}>
