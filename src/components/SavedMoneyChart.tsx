@@ -70,7 +70,7 @@ export function SavedMoneyChart() {
               cursor={false}
               content={<ChartTooltipContent className={`${theme.theme === 'dark' ? "bg-white text-black" : "bg-black text-white"}`} hideLabel />}
             />
-            <Bar className="" dataKey="desktop" fill="#F6921E" radius={8} />
+            <Bar className="" dataKey="desktop" fill="#eeb70a" radius={8} />
           </BarChart>
         </ChartContainer>
       </CardContent>

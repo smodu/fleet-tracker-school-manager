@@ -241,10 +241,10 @@ export default function Layout() {
                                 <h3 className="text-xs text-gray-400 mx-2">school</h3>
                             </div> */}
 
-                            <div className="flex">
-                                <img src={logo} className="w-12" />
-                                <div className="flex items-end uppercase texl-2xl w-full font-bold">
-                                    <h1 className="ml-1 text-[#F6921E]">igil</h1>
+                            <div className="flex relative">
+                                <img src={'https://shobeewebsite.sirv.com/Images/vigilbus/logovb.png'} className="w-12" />
+                                <div className="flex absolute bottom-0 left-9 items-end uppercase texl-2xl w-full font-bold">
+                                    <h1 className="ml-1 text-[#eeb70a]">igil</h1>
                                     <h1 className="ml-1">Bus</h1>
                                 </div>
                             </div>

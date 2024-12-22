@@ -14,7 +14,7 @@ interface Student {
   lastName: string
   age: number
   grade: string
-  assignedRoute: string
+  houseLoaction: string
   parentId: string
 }
 
@@ -24,6 +24,8 @@ const initialStudents: Student[] = [
   { id: 3, firstName: 'sara', lastName: 'el idrissi', age: 16, grade: '11th', assignedRoute: 'Route C', parentId: 'P003' },
 ]
 
+const moroccoCenter = { lat: 31.7917, lng: -7.0926 };
+const zoom = 4.5
 
 export default function Students() {
   const [students, setStudents] = useState<Student[]>(initialStudents)
@@ -32,7 +34,7 @@ export default function Students() {
     lastName: '',
     age: 0,
     grade: '',
-    assignedRoute: '',
+    houseLoaction: '',
     parentId: ''
   })
   const [editingId, setEditingId] = useState<number | null>(null)
@@ -41,15 +43,14 @@ export default function Students() {
 
   const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | null>(null);
 
+  console.log(newStudent)
 
   const handleLocationSelect = (location: { lat: number; lng: number }) => {
     setSelectedLocation(location);
-    handleInputChange({
-      target: {
-        name: 'assignedRoute',
-        value: JSON.stringify(location)
-      }
-    } as React.ChangeEvent<HTMLInputElement>);
+    setNewStudent((prev) => ({
+      ...prev,
+      houseLoaction: `${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`, // Or use another format if needed
+    }));
   };
 
   const toggleMap = () => {
@@ -62,16 +63,29 @@ export default function Students() {
   }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (editingId !== null) {
-      setStudents(students.map(s => s.id === editingId ? { ...s, ...newStudent } : s))
-      setEditingId(null)
+      setStudents(
+        students.map((s) =>
+          s.id === editingId ? { ...s, ...newStudent } : s
+        )
+      );
+      setEditingId(null);
     } else {
-      const newId = Math.max(...students.map(s => s.id), 0) + 1
-      setStudents([...students, { id: newId, ...newStudent }])
+      const newId = Math.max(...students.map((s) => s.id), 0) + 1;
+      setStudents([...students, { id: newId, ...newStudent }]);
     }
-    setNewStudent({ firstName: '', lastName: '', age: 0, grade: '', assignedRoute: '', parentId: '' })
-  }
+    setNewStudent({
+      firstName: '',
+      lastName: '',
+      age: 0,
+      grade: '',
+      houseLoaction: '',
+      parentId: '',
+    });
+    setSelectedLocation(null); // Reset location
+  };
+  
 
   const handleEdit = (student: Student) => {
     setNewStudent(student)
@@ -148,7 +162,7 @@ export default function Students() {
           <Button
             type="button"
             onClick={toggleMap}
-            className="w-full bg-black text-white dark:bg-white dark:text-black hover:bg-blue-600"
+            className="w-full bg-black text-white dark:bg-white dark:text-black hover:bg-black/80"
           >
             {isMapOpen ? 'Fermer la carte' : 'Sélectionner l\'emplacement de l\'élève'}
           </Button>
@@ -164,24 +178,15 @@ export default function Students() {
           {isMapOpen && (
             <div className="w-full h-[400px] border rounded-lg overflow-hidden">
               <LiveMapBox
-                center={selectedLocation || { lat: 31.7917, lng: -7.0926 }}
-                zoom={selectedLocation ? 12 : 2}
+                center={selectedLocation == null ? moroccoCenter : selectedLocation}
+                zoom={selectedLocation == null ? zoom : selectedLocation}
                 onLocationSelect={handleLocationSelect}
                 initialMarker={selectedLocation}
+                showTracking={false}
               />
             </div>
           )}
         </div>
-
-        <Input
-          type="text"
-          placeholder="Assigned Route"
-          name="assignedRoute"
-          value={newStudent.assignedRoute}
-          onChange={handleInputChange}
-          required
-          className="hidden"
-        />
         <Input
           type="text"
           placeholder="Parent"

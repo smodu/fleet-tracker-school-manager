@@ -7,9 +7,10 @@ interface LiveMapProps {
   zoom: number;
   onLocationSelect?: (location: { lat: number; lng: number }) => void;
   initialMarker?: { lat: number; lng: number } | null;
+  showTracking: boolean;
 }
 
-const LiveMapBox: React.FC<LiveMapProps> = ({ center, zoom }) => {
+const LiveMapBox: React.FC<LiveMapProps> = ({ center, zoom, showTracking }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<mapboxgl.Map | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
@@ -18,74 +19,147 @@ const LiveMapBox: React.FC<LiveMapProps> = ({ center, zoom }) => {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const markerRef = useRef<mapboxgl.Marker | null>(null);
 
-  console.log(studentLocation)
+  useEffect(() => {
+    mapboxgl.accessToken = import.meta.env.VITE_MAPBOXPUBLICKEY;
 
-useEffect(() => {
-  mapboxgl.accessToken = import.meta.env.VITE_MapBoxPublicKey;
+    if (!mapContainerRef.current) return;
 
-  if (!mapContainerRef.current) return;
-
-  if (!mapInstanceRef.current) {
-    const mapInstance = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [center.lng, center.lat],
-      zoom,
-      attributionControl: false,
-    });
-
-    mapInstanceRef.current = mapInstance;
-
-    mapInstance.on('load', () => {
-      const WORLD_VIEW = "MA";
-      const adminLayers = [
-        'admin-0-boundary',
-        'admin-1-boundary',
-        'admin-0-boundary-disputed',
-        'admin-1-boundary-bg',
-        'admin-0-boundary-bg',
-        'country-label',
-      ];
-
-      adminLayers.forEach((adminLayer) => {
-        if (mapInstance.getLayer(adminLayer)) {
-          mapInstance.setFilter(
-            adminLayer,
-            ["match", ["get", "worldview"], ["all", WORLD_VIEW], true, false]
-          );
-        }
+    if (!mapInstanceRef.current) {
+      const mapInstance = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-5.8138, 35.7767],
+        zoom,
+        attributionControl: false,
       });
 
-      setIsMapLoaded(true);
-      mapInstance.resize();
-      mapInstance.getCanvas().style.cursor = 'pointer';
+      mapInstanceRef.current = mapInstance;
 
-      mapInstance.on('click', (e) => {
-        if (markerRef.current) {
-          markerRef.current.remove();
+      mapInstance.on('load', () => {
+        const WORLD_VIEW = "MA";
+        const adminLayers = [
+          'admin-0-boundary',
+          'admin-1-boundary',
+          'admin-0-boundary-disputed',
+          'admin-1-boundary-bg',
+          'admin-0-boundary-bg',
+          'country-label',
+        ];
+
+        adminLayers.forEach((adminLayer) => {
+          if (mapInstance.getLayer(adminLayer)) {
+            mapInstance.setFilter(
+              adminLayer,
+              ["match", ["get", "worldview"], ["all", WORLD_VIEW], true, false]
+            );
+          }
+        });
+
+        setIsMapLoaded(true);
+        mapInstance.resize();
+        mapInstance.getCanvas().style.cursor = 'pointer';
+        if (showTracking) {
+          const fakeRoutes = [
+            {
+              id: 'route-1',
+              path: [
+                [-5.8138, 35.7767],
+                [-5.8180, 35.7790],
+                [-5.8200, 35.7810],
+              ],
+              color: '#e495ff',
+            },
+            {
+              id: 'route-2',
+              path: [
+                [-5.8138, 35.7767],
+                [-5.8150, 35.7780],
+                [-5.8170, 35.7795],
+              ],
+              color: '#ffa264',
+            },
+          ];
+
+          const coordinates = fakeRoutes.flatMap(route => route.path);
+          const bounds = coordinates.reduce((bounds, coord) => bounds.extend(coord), new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+
+          mapInstance.fitBounds(bounds, {
+            padding: 50,
+            maxZoom: 14,
+          });
+
+          fakeRoutes.forEach((route) => {
+            mapInstance.addSource(route.id, {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'LineString',
+                  coordinates: route.path,
+                },
+              },
+            });
+
+            mapInstance.addLayer({
+              id: `layer-${route.id}`,
+              type: 'line',
+              source: route.id,
+              layout: {},
+              paint: {
+                'line-color': route.color,
+                'line-width': 3,
+              },
+            });
+          });
+
+          const fakeBuses = [
+            { id: 'bus-1', lat: 35.7810, lng: -5.8200 },
+            { id: 'bus-2', lat: 35.7795, lng: -5.8170 },
+          ];
+
+          const busIconUrl = 'https://cdn-icons-png.flaticon.com/512/5706/5706988.png'; // Replace with your bus icon URL
+
+          fakeBuses.forEach((bus) => {
+            const el = document.createElement('div');
+            el.style.backgroundImage = `url(${busIconUrl})`;
+            el.style.width = '40px';
+            el.style.height = '40px';
+            el.style.backgroundSize = 'cover';
+
+            new mapboxgl.Marker({ element: el })
+              .setLngLat([bus.lng, bus.lat])
+              .addTo(mapInstance);
+          });
         }
-        const marker = new mapboxgl.Marker();
-        marker.setLngLat(e.lngLat).addTo(mapInstanceRef.current);
-        
-        setStudentLocation(marker._lngLat);
 
-        markerRef.current = marker;
+        mapInstance.on('click', (e) => {
+          if (showTracking) return;
+
+          if (markerRef.current) {
+            markerRef.current.remove();
+          }
+
+          const marker = new mapboxgl.Marker();
+          marker.setLngLat(e.lngLat).addTo(mapInstance);
+
+          setStudentLocation(marker._lngLat);
+          markerRef.current = marker;
+        });
       });
-    });
 
-    mapInstance.on('error', (e) => {
-      console.error('Map loading error:', e);
-    });
-  }
-
-  return () => {
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.remove();
-      mapInstanceRef.current = null;
+      mapInstance.on('error', (e) => {
+        console.error('Map loading error:', e);
+      });
     }
-  };
-}, [center, zoom]);
 
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [center, zoom]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
