@@ -21,7 +21,7 @@ import LiveMap from './pages/live-map'
 function App() {
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>

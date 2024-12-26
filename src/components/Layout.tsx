@@ -85,7 +85,7 @@ const data = {
     ],
     navMain: [
         {
-            title: "Dashboard",
+            title: "Tableau de bord",
             url: "/",
             icon: LayoutDashboard,
             isActive: true,
@@ -95,41 +95,41 @@ const data = {
                     url: "/",
                 },
                 {
-                    title: "Reports",
+                    title: "Rapports",
                     url: "/reports",
                 },
                 {
-                    title: "Live Map",
+                    title: "Live map",
                     url: "/live-map",
                 },
             ],
         },
         {
-            title: "Fleet Management",
+            title: "Gestion de flotte",
             url: "/fleet-management",
             icon: Bus,
             items: [
                 {
-                    title: "Vehicles",
+                    title: "Véhicules",
                     url: "/fleet-management/",
                 },
                 {
-                    title: "Drivers",
+                    title: "Conducteurs",
                     url: "/fleet-management/drivers",
                 },
                 {
-                    title: "Routes",
+                    title: "Itinéraires",
                     url: "/fleet-management/routes",
                 },
             ],
         },
         {
-            title: "Students Management",
+            title: "Gestion des élèves",
             url: "/student-management",
             icon: Users,
             items: [
                 {
-                    title: "Students",
+                    title: "Élèves",
                     url: "/student-management/students",
                 },
                 {
@@ -139,16 +139,16 @@ const data = {
             ],
         },
         {
-            title: "Settings",
+            title: "Paramètres",
             url: "#",
             icon: Settings,
             items: [
                 {
-                    title: "theme",
+                    title: "Thème",
                     url: "/settings/theme",
                 },
                 {
-                    title: "language",
+                    title: "Langue",
                     url: "/settings/language",
                 },
                 {
@@ -170,6 +170,7 @@ const data = {
             icon: MessageCircle,
         }
     ],
+    
 }
 
 
@@ -242,8 +243,8 @@ export default function Layout() {
                             </div> */}
 
                             <div className="flex relative">
-                                <img src={'https://shobeewebsite.sirv.com/Images/vigilbus/logovb.png'} className="w-12" />
-                                <div className="flex absolute bottom-0 left-9 items-end uppercase texl-2xl w-full font-bold">
+                                <img src={'https://shobeewebsite.sirv.com/Images/vigilbus/logovb.png'} className="w-16" />
+                                <div className="hidden absolute bottom-0 left-9 items-end uppercase texl-2xl w-full font-bold">
                                     <h1 className="ml-1 text-[#eeb70a]">igil</h1>
                                     <h1 className="ml-1">Bus</h1>
                                 </div>
